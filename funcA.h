@@ -3,7 +3,8 @@
 
 class FuncA {
 public:
-    double calculate();  // Публічна функція для обчислень
+    double calculate(int n);  // Додано параметр n
 };
 
 #endif // FUNCA_H
+
