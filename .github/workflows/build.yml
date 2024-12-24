@@ -4,14 +4,42 @@ on:
   push:
     branches:
       - branchMake
-
+      - branchAutomake
+      - branchAutoPackage
+      - branchAutoTest
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # 1. Клонування репозиторію
       - uses: actions/checkout@v3
+
+      # 2. Встановлення залежностей
       - name: Install Dependencies
-        run: sudo apt-get install -y build-essential
-      - name: Build with Makefile
+        run: sudo apt-get install -y build-essential automake autoconf dpkg
+
+      # 3. Реконфігурація проекту (для branchAutomake і branchAutoPackage)
+      - name: Configure Project
+        run: |
+          autoreconf --install
+          ./configure
+
+      # 4. Збірка бінарного файлу
+      - name: Build Binary
         run: make
+
+      # 5. Створення тарболу (для branchAutomake)
+      - name: Build Tarball
+        if: github.ref == 'refs/heads/branchAutomake'
+        run: make dist
+
+      # 6. Створення .deb пакету (для branchAutoPackage)
+      - name: Build Debian Package
+        if: github.ref == 'refs/heads/branchAutoPackage'
+        run: dpkg-deb --build myapp
+
+      # 7. Запуск тестів (для branchAutoTest)
+      - name: Run Unit Tests
+        if: github.ref == 'refs/heads/branchAutoTest'
+        run: ./test_main
 
