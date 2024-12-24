@@ -14,11 +14,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install Dependencies
-        run: sudo apt-get install -y build-essential
-      - name: Build with Makefile
+        run: sudo apt-get install -y build-essential automake autoconf
+      - name: Configure Project
+        run: |
+          autoreconf --install
+          ./configure
+      - name: Build Binary
         run: make
       - name: Build Tarball
         run: make dist
-      - name: Build Debian Package
-        run: dpkg-deb --build main
-
