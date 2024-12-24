@@ -7,6 +7,7 @@ on:
       - branchAutomake
       - branchAutoPackage
       - branchAutoTest
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -38,7 +39,12 @@ jobs:
         if: github.ref == 'refs/heads/branchAutoPackage'
         run: dpkg-deb --build myapp
 
-      # 7. Запуск тестів (для branchAutoTest)
+      # 7. Збірка тестового бінарника (для branchAutoTest)
+      - name: Build Unit Tests
+        if: github.ref == 'refs/heads/branchAutoTest'
+        run: g++ -o test_main test_main.cpp
+
+      # 8. Запуск тестів (для branchAutoTest)
       - name: Run Unit Tests
         if: github.ref == 'refs/heads/branchAutoTest'
         run: ./test_main
