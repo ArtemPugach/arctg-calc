@@ -1,13 +1,29 @@
 #include <iostream>
 #include <cassert>
+#include "main.cpp"
 
-void test_function() {
-    assert(1 + 1 == 2);
-    std::cout << "Test passed!" << std::endl;
+void test_arth() {
+    ArthCalculator calculator;
+
+    // Тест 1: arth(0) = 0
+    assert(std::abs(calculator.arth(0, 10) - 0.0) < 1e-6);
+
+    // Тест 2: arth(0.5)
+    double result = calculator.arth(0.5, 10);
+    std::cout << "arth(0.5) = " << result << " (expected ~0.5493)" << std::endl;
+
+    // Тест 3: arth out of range
+    try {
+        calculator.arth(1.1, 10);
+        assert(false); // This line should not be reached
+    } catch (const std::invalid_argument&) {
+        std::cout << "Caught invalid_argument as expected" << std::endl;
+    }
 }
 
 int main() {
-    test_function();
+    test_arth();
+    std::cout << "All tests passed!" << std::endl;
     return 0;
 }
 
