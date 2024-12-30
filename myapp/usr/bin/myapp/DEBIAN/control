@@ -4,5 +4,5 @@ Section: base
 Priority: optional
 Architecture: all
 Maintainer: Your Name <your.email@example.com>
-Description: A simple C++ program
+Description: A simple C++ program packaged as a .deb
 
